@@ -86,7 +86,7 @@ if os.environ.get('TRAVIS_ENV', None):
         }
     }
 else:
-    DATABASES['default'] = dj_database_url.config()
+    DATABASES['default'] = dj_database_url.config(conn_max_age=500)
 
 
 # Password validation
@@ -122,7 +122,17 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Simplified static file serving
+# https://warehouse.python.org/project/whitenoise/
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
